@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 const taskTimeOfDay = startsAt => {
     const [h, m] = new Date(startsAt).toTimeString().split(':');
@@ -12,17 +12,14 @@ export const TasksDayView = ({ tasks }) => {
     return (
     <div id='TasksDayView'>
         <ol>
-            {tasks.map((task) => (
+            {tasks.map((task, i) => (
                 <li key={task.startsAt}>
-                    <button type='button'>{taskTimeOfDay(task.startsAt)}</button>
+                    <button type='button' onClick={()=> setSelectedTask(i)}>{taskTimeOfDay(task.startsAt)}</button>
                 </li>
             ))}
         </ol>
         
-        {tasks.length === 0 ? (
-            <div>No Tasks today</div>) : (
-                <Task customer={tasks[0].customer}/>
-                )}
+        {tasks.length === 0 ? (<div>No Tasks today</div>) : (<Task {...tasks[selectedTask]}/>)}
     </div>
     );
 }

@@ -7,7 +7,7 @@ import {
     TasksDayView
 } from '../src/Runbook';
 
-// react component, functoin or module
+// react component, function or module
 // behavior driven development
 // chasing green
 describe('Task', () => {
@@ -81,11 +81,11 @@ describe('TasksDayView', () => {
         expect(container.querySelectorAll('li > button')).toHaveLength(2);
         expect(container.querySelectorAll('li > button')[0].type).toEqual('button');
     });
-    it.skip('renders another Task when selected', () => {
+    it('renders another Task when selected', () => {
         render(<TasksDayView tasks={tasks} />);
         let button = container.querySelectorAll('button')[1];
         ReactTestUtils.Simulate.click(button);
-        expect(container.textContent).toEqual('Joe');
+        expect(container.textContent).toMatch('Joe');
     });
 });
 
