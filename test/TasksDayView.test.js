@@ -5,7 +5,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import {
     Task,
     TasksDayView
-} from '../src/Runbook';
+} from '../src/TasksDayView';
 
 // react component, function or module
 // behavior driven development
@@ -86,6 +86,17 @@ describe('TasksDayView', () => {
         let button = container.querySelectorAll('button')[1];
         ReactTestUtils.Simulate.click(button);
         expect(container.textContent).toMatch('Joe');
+    });
+    it('adds toggled class to button when selected', () => {
+        render(<TasksDayView tasks={tasks} />);
+        const button = container.querySelectorAll('button')[1];
+        ReactTestUtils.Simulate.click(button);
+        expect(button.className).toMatch('toggled');
+    });
+    it('does not add toggled class to button when not selected', () => {
+        render(<TasksDayView tasks={tasks} />);
+        const button = container.querySelectorAll('button')[1];        
+        expect(button.className).not.toMatch('toggled');
     });
 });
 
