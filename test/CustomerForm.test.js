@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -51,7 +62,7 @@ describe('CustomerForm', function () {
         expect(formElement.tagName).toEqual('INPUT');
         expect(formElement.type).toEqual('text');
     };
-    var customerNameField = function () { return form('customer').elements.customerName; };
+    var field = function (name) { return form('customer').elements[name]; };
     beforeEach(function () {
         var _a;
         (_a = domManipulator_1.createContainer(), render = _a.render, container = _a.container);
@@ -60,27 +71,32 @@ describe('CustomerForm', function () {
         render(react_1.default.createElement(CustomerForm_1.CustomerForm, null));
         expect(form('customer')).not.toBeNull();
     });
-    it('renders the name field as text box', function () {
-        render(react_1.default.createElement(CustomerForm_1.CustomerForm, null));
-        var field = customerNameField();
-        expectToBeInputFieldOfTypeText(field);
-    });
-    it('includes the existing value for the first name', function () {
-        render(react_1.default.createElement(CustomerForm_1.CustomerForm, { customerName: "Joe" }));
-        var field = customerNameField();
-        expect(field.value).toEqual("Joe");
-    });
+    var rendersTextbox = function (fieldName) {
+        it('renders the name field as text box', function () {
+            render(react_1.default.createElement(CustomerForm_1.CustomerForm, null));
+            expectToBeInputFieldOfTypeText(field(fieldName));
+        });
+    };
+    var itIncludeExistingValueForFieldValue = function (fieldName) {
+        it('includes the existing value for the first name', function () {
+            var _a;
+            render(react_1.default.createElement(CustomerForm_1.CustomerForm, __assign({}, (_a = {}, _a[fieldName] = 'some value', _a))));
+            expect(field(fieldName).value).toEqual('some value');
+        });
+    };
     var labelFor = function (formElement) { return container.querySelector("label[for=\"" + formElement + "\"]"); };
-    it('renders a label for the customer name field', function () {
+    var itRendersALabel = function (fieldName, labelText) {
+        it('renders a label for the customer name field', function () {
+            render(react_1.default.createElement(CustomerForm_1.CustomerForm, null));
+            expect(labelFor(fieldName)).not.toBeUndefined();
+            expect(labelFor(fieldName).textContent).toEqual(labelText);
+        });
+    };
+    var itLabelMatchFieldName = function (id) { return it('assign an id that matches the label id to field', function () {
         render(react_1.default.createElement(CustomerForm_1.CustomerForm, null));
-        expect(labelFor('customerName')).not.toBeUndefined();
-        expect(labelFor('customerName').textContent).toEqual('Customer name');
-    });
-    it('assign an id that matches the label id to the first name field', function () {
-        render(react_1.default.createElement(CustomerForm_1.CustomerForm, null));
-        expect(customerNameField().id).toBe('customerName');
-    });
-    it('saves existing customer name when submitted', function () { return __awaiter(_this, void 0, void 0, function () {
+        expect(field(id).id).toBe(id);
+    }); };
+    var itSubmitsNewValue = function () { return it('saves new field value when submitted', function () { return __awaiter(_this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -89,7 +105,7 @@ describe('CustomerForm', function () {
                             var customerName = _a.customerName;
                             return expect(customerName).toEqual('Steve');
                         } }));
-                    return [4 /*yield*/, test_utils_1.default.Simulate.change(customerNameField(), { target: { value: 'Steve' } })];
+                    return [4 /*yield*/, test_utils_1.default.Simulate.change(field('customerName'), { target: { value: 'Steve', name: 'customerName' } })];
                 case 1:
                     _a.sent();
                     return [4 /*yield*/, test_utils_1.default.Simulate.submit(form('customer'))];
@@ -98,6 +114,18 @@ describe('CustomerForm', function () {
                     return [2 /*return*/];
             }
         });
-    }); });
+    }); }); };
+    describe('customer name field', function () {
+        rendersTextbox('customerName');
+        itIncludeExistingValueForFieldValue('customerName');
+        itRendersALabel('customerName', 'Customer name');
+        itLabelMatchFieldName('customerName');
+        itSubmitsNewValue();
+    });
+    it('has a submit button', function () {
+        render(react_1.default.createElement(CustomerForm_1.CustomerForm, null));
+        var submitButton = container.querySelector('input[type="submit"]');
+        expect(submitButton).not.toBeNull();
+    });
 });
 //# sourceMappingURL=CustomerForm.test.js.map
