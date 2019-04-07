@@ -7,3 +7,5 @@ export const createContainer = () => {
         container
     };
 };
+
+export const form = (id ) => container.querySelector(`form[id="${id}"`);

@@ -19,13 +19,13 @@ describe('Task', () => {
     const render = (component) => { ReactDOM.render(component, container); }
     // test, starts with present tense verb, it refers to the noun you used to name your suite
     it('renders the customer first name', () => {
-        customer = { firstName: 'Alex' };
+        customer = { customerName: 'Alex' };
         render(<Task customer={customer} />);
         expect(container.textContent).toMatch('Alex');
 
     });
     it('renders another customer first name', () => {
-        customer = { firstName: 'Joe' };
+        customer = { customerName: 'Joe' };
         render(<Task customer={customer} />);
         expect(container.textContent).toMatch('Joe');
 
@@ -39,10 +39,10 @@ describe('TasksDayView', () => {
     const today = new Date();
     const tasks = [{
         startsAt: today.setHours(10,0),
-        customer: {firstName: 'Alex'}
+        customer: {customerName: 'Alex'}
     }, {
         startsAt: today.setHours(12,0),
-        customer: {firstName: 'Joe'}
+        customer: {customerName: 'Joe'}
     }];
     beforeEach(() => {
         container = document.createElement('div');
@@ -56,9 +56,8 @@ describe('TasksDayView', () => {
         expect(container.querySelector('div#TasksDayView')).not.toBeNull();
     });
     it('renders multiple Tasks', () => {
-        render(<TasksDayView tasks={tasks} />);
-        expect(container.querySelector('ol')).not.toBeNull();
-        expect(container.querySelector('ol').children).toHaveLength(2);
+        render(<TasksDayView tasks={tasks} />);        
+        expect(container.querySelector('ol') && container.querySelector('ol').children).toHaveLength(2);
 
     });
     it('renders each Task in li', () => {

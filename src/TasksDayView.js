@@ -6,14 +6,14 @@ const taskTimeOfDay = startsAt => {
 }
 
 export const Task = ({ startsAt, customer, service, notes, status }) => {
-    return (
+    let task = (
     <div id='Task'>
         <h3>Current task at {taskTimeOfDay(startsAt)}</h3>
         <table>
             <tbody>
                 <tr>
-                    <td>Customer</td>
-                    <td>{customer.firstName}</td>
+                    <td>Customer Name</td>
+                    <td>{customer.customerName}</td>
                 </tr>
                 <tr>
                     <td>Service</td>
@@ -31,6 +31,7 @@ export const Task = ({ startsAt, customer, service, notes, status }) => {
         </table>
     </div>
     );
+    return task;
 };
 
 export const TasksDayView = ({ tasks }) => {
